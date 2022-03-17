@@ -1,10 +1,40 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+  <div>
+    <router-view />
+  </div>
 </template>
+
+<script>
+import { mapGetters,mapActions } from 'vuex'
+// import fixSwal from "../../swal/index.js"
+
+export default {
+  name: "App",
+  created() {
+    console.log(this.$constants);
+    this.checkUserState().then(() => {
+      if(this.loggedIn){
+        this.me();
+      }
+    });
+  },
+  methods: {
+    ...mapActions({
+      checkUserState: 'user/setLoggedInState',
+      me: 'user/me'
+    }),
+    test(){
+      // fixSwal
+    }
+  },
+  computed: {
+    ...mapGetters({
+      loggedIn: "user/loggedIn",
+      allNotifications: 'application/notifications'
+    })
+  },
+}
+</script>
 
 <style>
 #app {
